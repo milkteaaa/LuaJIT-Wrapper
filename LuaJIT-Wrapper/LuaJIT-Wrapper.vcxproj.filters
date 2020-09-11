@@ -19,6 +19,15 @@
     <Filter Include="Resource Files\ImGui">
       <UniqueIdentifier>{382d5e6d-1282-461c-b2d8-19867d9a6823}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Exploit">
+      <UniqueIdentifier>{02dbf471-a05a-4f67-a12f-53fa10148e55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{3c76d631-fe03-4dd7-a652-12e9a70be545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Bypasses">
+      <UniqueIdentifier>{5dd49179-bbe7-4cd4-b859-73f60048ec40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -50,15 +59,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Roblox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Retcheck.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Client.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Lua\lua.hpp">
       <Filter>Resource Files\Lua</Filter>
     </ClInclude>
@@ -76,9 +76,6 @@
     </ClInclude>
     <ClInclude Include="Lua\lauxlib.h">
       <Filter>Resource Files\Lua</Filter>
-    </ClInclude>
-    <ClInclude Include="LuaWrapper.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_impl_dx11.h">
       <Filter>Resource Files\ImGui</Filter>
@@ -107,11 +104,23 @@
     <ClInclude Include="ImGui\imgui_impl_dx9.h">
       <Filter>Resource Files\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="LuaWrapper.h">
+      <Filter>Header Files\Exploit</Filter>
+    </ClInclude>
     <ClInclude Include="Drawing.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Exploit</Filter>
+    </ClInclude>
+    <ClInclude Include="Roblox.h">
+      <Filter>Header Files\Exploit</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Structs.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Retcheck.h">
+      <Filter>Header Files\Bypasses</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
