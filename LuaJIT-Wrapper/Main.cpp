@@ -6,7 +6,7 @@
 #include "Client.h"
 #pragma comment(lib, "wininet.lib")
 
-DWORD ScriptContext;
+DWORD DataModel;
 
 using LuaWrapper::m_rL;
 using LuaWrapper::m_L;
@@ -73,7 +73,7 @@ DWORD WINAPI LuaPipe(PVOID lvpParameter)
 	}
 }
 
-void ReturnDataModel()
+void SetRBXLuaState()
 {
 	static DWORD SC;
 	SC = FindFirstClass(GetDMPad(), "ScriptContext");
@@ -107,8 +107,9 @@ void main()
 {
 	ConsoleBypass("LuaJIT Wrapper");
 	printf("Getting DataModel..\n");
-	ReturnDataModel();
+	DataModel = GetDMPad();
 	printf("Setting LuaState..\n");
+	SetRBXLuaState();
 	m_L = luaL_newstate();
 	LuaWrapper::VehHandlerpush();
 	printf("Loading libraries..\n");
@@ -127,6 +128,20 @@ void main()
 	SetClientName("Roblox Lua Just-In-Time Client");
 }
 
+void TeleportHandler()
+{
+	main();
+	while (true)
+	{
+		if (DataModel != GetDMPad())
+		{
+			Sleep(1);
+			main();
+			std::cout << "Reloaded module" << endl;
+		}
+		Sleep(1);
+	}
+}
 
 
 BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID) {
@@ -137,7 +152,7 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID) {
 		DWORD OldProtection;
 		VirtualProtect(Module, 0x1000, PAGE_READWRITE, &OldProtection);
 		ZeroMemory(Module, 0x1000);
-		CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)main, NULL, NULL, NULL);
+		CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)TeleportHandler, NULL, NULL, NULL);
 		break;
 	}
 	return TRUE;
