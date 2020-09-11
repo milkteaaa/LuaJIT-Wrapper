@@ -98,7 +98,6 @@ void WrapGlobals()
 		LuaWrapper::Wrap(m_rL, m_L, -1);
 		lua_setglobal(m_L, Globals[i]);
 		r_lua_pop(m_rL, 1);
-		std::cout << "WRAPPED GLOBAL: " << Globals[i] << std::endl;
 	}
 	printf("Globals wrapped!\n");
 }
@@ -137,7 +136,7 @@ void TeleportHandler()
 		{
 			Sleep(1);
 			main();
-			std::cout << "Reloaded module" << endl;
+			std::cout << "Reloaded module!" << endl;
 		}
 		Sleep(1);
 	}
