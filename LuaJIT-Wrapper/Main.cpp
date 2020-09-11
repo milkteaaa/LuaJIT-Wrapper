@@ -76,7 +76,7 @@ DWORD WINAPI LuaPipe(PVOID lvpParameter)
 void ReturnDataModel()
 {
 	static DWORD SC;
-	findfirstchildofclass(GetDMPad(), (DWORD)&SC, "ScriptContext");
+	SC = FindFirstClass(GetDMPad(), "ScriptContext");
 	m_rL = (SC + 164) + *(DWORD*)(SC + 164);
 	*(DWORD*)(*(DWORD*)(m_rL + 112) + 24) = 7;
 }
@@ -116,7 +116,6 @@ void main()
 	printf("Wrapping Globals..\n");
 	WrapGlobals();
 	DrawingAPI::InitiateDrawingAPI(m_L);
-	lua_register(m_L, "getrawmetatable", getrawmetatable);
 	lua_newtable(m_L);
 	lua_setglobal(m_L, "_G");
 	lua_setglobal(m_L, "shared");

@@ -33,9 +33,6 @@ getdatamodel2ok   getdatamodel2 = (getdatamodel2ok)(x(14995600));
 typedef DWORD(__thiscall* getdatamodelok)(DWORD, DWORD);
 getdatamodelok   r_getdatamodel = (getdatamodelok)(x(14995936));
 
-typedef DWORD(__thiscall* findfirstchildofclassok)(DWORD, DWORD, const std::string&);
-findfirstchildofclassok   findfirstchildofclass = (findfirstchildofclassok)(x(6344368));
-
 typedef int(__cdecl* printok)(int, const char*);
 printok   print = (printok)(x(6237552));
 
