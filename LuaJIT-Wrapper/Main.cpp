@@ -8,10 +8,8 @@
 
 DWORD ScriptContext;
 
-using Bridge::m_rL;
-using Bridge::m_L;
-
-using namespace std;
+using LuaWrapper::m_rL;
+using LuaWrapper::m_L;
 
 // no this is definitely not axon you shut ur mouth
 
@@ -75,18 +73,13 @@ DWORD WINAPI LuaPipe(PVOID lvpParameter)
 	}
 }
 
-int getrawmetatable(lua_State* L) {
-	Bridge::push(L, m_rL, 1);
-
-	if (r_lua_getmetatable(m_rL, -1) == 0) {
-		lua_pushnil(L);
-		return 0;
-	}
-	Bridge::push(m_rL, L, -1);
-
-	return 1;
+void ReturnDataModel()
+{
+	static DWORD SC;
+	findfirstchildofclass(GetDMPad(), (DWORD)&SC, "ScriptContext");
+	m_rL = (SC + 164) + *(DWORD*)(SC + 164);
+	*(DWORD*)(*(DWORD*)(m_rL + 112) + 24) = 7;
 }
-
 
 void WrapGlobals()
 {
@@ -102,7 +95,7 @@ void WrapGlobals()
 	for (int i = 0; i < Globals.size(); i++)
 	{
 		r_lua_getglobal(m_rL, Globals[i]);
-		Bridge::push(m_rL, m_L, -1);
+		LuaWrapper::Wrap(m_rL, m_L, -1);
 		lua_setglobal(m_L, Globals[i]);
 		r_lua_pop(m_rL, 1);
 		std::cout << "WRAPPED GLOBAL: " << Globals[i] << std::endl;
@@ -117,7 +110,7 @@ void main()
 	ReturnDataModel();
 	printf("Setting LuaState..\n");
 	m_L = luaL_newstate();
-	Bridge::VehHandlerpush();
+	LuaWrapper::VehHandlerpush();
 	printf("Loading libraries..\n");
 	luaL_openlibs(m_L);
 	printf("Wrapping Globals..\n");

@@ -122,5 +122,8 @@
     <ClInclude Include="Retcheck.h">
       <Filter>Header Files\Bypasses</Filter>
     </ClInclude>
+    <ClInclude Include="RbxFunctions.hpp">
+      <Filter>Header Files\Exploit</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

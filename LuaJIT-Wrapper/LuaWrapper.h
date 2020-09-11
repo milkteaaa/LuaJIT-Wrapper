@@ -14,9 +14,6 @@ extern "C" {
 
 #include <unordered_map>
 
-#define AXONDEBUG false
-
-
 struct Userdata
 {
 	int32_t reference;
@@ -24,15 +21,15 @@ struct Userdata
 
 int registry;
 
-namespace Bridge
+namespace LuaWrapper
 {
 	DWORD m_rL;
 	lua_State* m_L;
 
-	void push(lua_State* L, DWORD rL, int index);
-	void push(DWORD rL, lua_State* L, int index);
+	void Unwrap(lua_State* L, DWORD rL, int index);
+	void Wrap(DWORD rL, lua_State* L, int index);
 
-	int rbxFunctionBridge(DWORD rL);
+	int RBXLuaConversion(DWORD rL);
 	int VanillaLuaConversion(lua_State* L);
 	LONG WINAPI vehHandler(PEXCEPTION_POINTERS ex);
 	VOID VehHandlerpush();
@@ -87,10 +84,10 @@ std::string DownloadURL(const char* URL) {
 
 static int UserDataGC(lua_State* Thread) {
 	void* UD = lua_touserdata(Thread, 1);
-	if (Bridge::m_rL) {
+	if (LuaWrapper::m_rL) {
 
-		r_lua_rawgeti(Bridge::m_rL, LUA_REGISTRYINDEX, (int)UD);
-		if (r_lua_type(Bridge::m_rL, -1) <= R_LUA_TNIL) {
+		r_lua_rawgeti(LuaWrapper::m_rL, LUA_REGISTRYINDEX, (int)UD);
+		if (r_lua_type(LuaWrapper::m_rL, -1) <= R_LUA_TNIL) {
 			lua_pushnil(Thread);
 			lua_rawseti(Thread, LUA_REGISTRYINDEX, (int)UD);
 
@@ -99,7 +96,7 @@ static int UserDataGC(lua_State* Thread) {
 	return 0;
 }
 
-namespace Bridge
+namespace LuaWrapper
 {
 
 
@@ -134,9 +131,9 @@ namespace Bridge
 
 		else
 		{
-			push(L, m_rL, 1);
+			Unwrap(L, m_rL, 1);
 			r_lua_getfield(m_rL, -1, key);
-			push(m_rL, L, -1);
+			Wrap(m_rL, L, -1);
 		}
 		return 1;
 	}
@@ -150,13 +147,13 @@ namespace Bridge
 		{
 			if (ex->ContextRecord->Eip == int3breakpoints[0])
 			{
-				ex->ContextRecord->Eip = (DWORD)(Bridge::rbxFunctionBridge);
+				ex->ContextRecord->Eip = (DWORD)(LuaWrapper::RBXLuaConversion);
 				return EXCEPTION_CONTINUE_EXECUTION;
 			}
 
 			if (ex->ContextRecord->Eip == int3breakpoints[1])
 			{
-				ex->ContextRecord->Eip = (DWORD)(Bridge::RobloxYield);
+				ex->ContextRecord->Eip = (DWORD)(LuaWrapper::RobloxYield);
 				return EXCEPTION_CONTINUE_EXECUTION;
 			}
 			return -1;
@@ -184,14 +181,8 @@ namespace Bridge
 		AddVectoredExceptionHandler(1, vehHandler);
 	}
 
-	void push(lua_State* L, DWORD rL, int index)
+	void Unwrap(lua_State* L, DWORD rL, int index)
 	{
-#if AXONDEBUG
-		printf("[AXON DEBUG] ROBLOX WRAP: %d\n", lua_type(L, index));
-#endif 
-
-
-		//printf("ROBLOX: %d\n", lua_type(L, index));
 		switch (lua_type(L, index))
 		{
 		case LUA_TLIGHTUSERDATA:
@@ -224,8 +215,8 @@ namespace Bridge
 			lua_pushnil(L);
 			while (lua_next(L, -2) != LUA_TNIL)
 			{
-				Bridge::push(L, rL, -2);
-				Bridge::push(L, rL, -1);
+				LuaWrapper::Unwrap(L, rL, -2);
+				LuaWrapper::Unwrap(L, rL, -1);
 				r_lua_settable(rL, -3);
 				lua_pop(L, 1);
 			}
@@ -243,12 +234,8 @@ namespace Bridge
 		default: break;
 		}
 	}
-	void push(DWORD rL, lua_State* L, int index)
+	void Wrap(DWORD rL, lua_State* L, int index)
 	{
-#if  AXONDEBUG
-		printf("[DEBUG AXON] VANILLA WRAP: %d\r\n", r_lua_type(rL, index));
-#endif  
-		//printf("VANILLA: %d\r\n", r_lua_type(rL, index));
 		switch (r_lua_type(rL, index))
 		{
 		case R_LUA_TLIGHTUSERDATA:
@@ -280,8 +267,8 @@ namespace Bridge
 			r_lua_pushnil(rL);
 			while (r_lua_next(rL, -2) != R_LUA_TNIL)
 			{
-				Bridge::push(rL, L, -2);
-				Bridge::push(rL, L, -1);
+				LuaWrapper::Wrap(rL, L, -2);
+				LuaWrapper::Wrap(rL, L, -1);
 				lua_settable(L, -3);
 				r_lua_pop(rL, 1);
 			}
@@ -296,7 +283,7 @@ namespace Bridge
 				r_lua_pushvalue(rL, index);
 				reinterpret_cast<Userdata*>(lua_newuserdata(L, sizeof(Userdata)))->reference = r_luaL_ref(rL, -10000);
 				r_lua_getmetatable(rL, index);
-				Bridge::push(rL, L, -1);
+				LuaWrapper::Wrap(rL, L, -1);
 				lua_pushcfunction(L, Index);
 				lua_setfield(L, -2, "__index");
 				lua_pushcfunction(L, UserDataGC);
@@ -331,14 +318,11 @@ namespace Bridge
 		lua_State* L = (lua_State*)r_lua_touserdata(thread, lua_upvalueindex(1));
 		const int nargs = r_lua_gettop(thread);
 		for (int arg = 1; arg <= nargs; ++arg)
-			Bridge::push(thread, L, arg);
+			LuaWrapper::Wrap(thread, L, arg);
 		return lua_resume(L, nargs);
 		lua_close(L);
 
 	}
-
-
-
 
 	int VanillaLuaConversion(lua_State* L)
 	{
@@ -351,7 +335,7 @@ namespace Bridge
 		r_lua_rawgeti(rL, LUA_REGISTRYINDEX, key);
 
 		for (int arg = 1; arg <= lua_gettop(L); ++arg)
-			Bridge::push(L, rL, arg);
+			LuaWrapper::Unwrap(L, rL, arg);
 
 		if (r_lua_pcall(rL, lua_gettop(L), LUA_MULTRET, 0))
 		{
@@ -366,29 +350,26 @@ namespace Bridge
 				r_lua_pop(rL, 1);
 				lua_pushthread(L);
 				lua_pushcclosure(L, &LuaYield, 1);
-				Bridge::push(L, rL, -1);
+				LuaWrapper::Unwrap(L, rL, -1);
 
 				return lua_yield(L, 0);
 			}
-			//r_luaL_error(m_rL, lua_tostring(L, -1));
 			return luaL_error(L, errormessage);
-			//MessageBoxA(NULL, "SUCCESS VANILLA", "vanillabridge", NULL);
 			delete[] errormessage;
 		}
 
 		int args = 0;
 
 		for (int arg = 1; arg <= r_lua_gettop(rL); ++arg, ++args)
-			Bridge::push(rL, L, arg);
+			LuaWrapper::Wrap(rL, L, arg);
 
 		r_lua_settop(rL, 0);
 
 		return args;
 		lua_close(L);
-		//MessageBoxA(NULL, "SUCCESS VANILLA 2", "vanillabridge", NULL);
 	}
 
-	int rbxFunctionBridge(DWORD rL)
+	int RBXLuaConversion(DWORD rL)
 	{
 
 		lua_pushstring(m_L, std::to_string(++registry).c_str());
@@ -400,20 +381,15 @@ namespace Bridge
 		lua_rawgeti(L, LUA_REGISTRYINDEX, key);
 
 		for (int arg = 1; arg <= r_lua_gettop(rL); ++arg)
-			Bridge::push(rL, L, arg);
+			LuaWrapper::Wrap(rL, L, arg);
 
 		switch (lua_pcall(L, r_lua_gettop(rL), LUA_MULTRET, 0))
 		{
-
-
 		case LUA_YIELD:
-
 			r_lua_pushlightuserdata(m_rL, (void*)L);
 			r_lua_pushcclosure(m_rL, int3breakpoints[1], NULL, 1, NULL);
-
 			return -1;
 		case LUA_ERRRUN:
-			//printf("RVX ROBLOX ERROR: %s\n", lua_tostring(L, -1));
 			r_luaL_error(rL, luaL_checkstring(L, -1));
 			return -1;
 		default: break;
@@ -422,12 +398,9 @@ namespace Bridge
 		int args = 0;
 
 		for (int arg = 1; arg <= lua_gettop(L); ++arg, ++args)
-			Bridge::push(L, rL, arg);
-
+			LuaWrapper::Unwrap(L, rL, arg);
 		lua_settop(L, 0);
-
 		return args;
 		lua_close(L);
-
 	}
 }

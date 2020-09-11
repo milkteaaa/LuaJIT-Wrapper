@@ -23,9 +23,6 @@
 
 #include "Lua/lua.hpp"
 
-lua_State* L;
-uintptr_t rL;
-
 int GDM;
 
 DWORD TOP = 24;
@@ -147,11 +144,4 @@ int GetDMPad()
 	r_getdatamodel(getdatamodel2(), (DWORD)DMPad);
 	DWORD DM = DMPad[0];
 	return DM + 12;
-}
-void ReturnDataModel()
-{
-	static DWORD SC;
-	findfirstchildofclass(GetDMPad(), (DWORD)&SC, "ScriptContext");
-	m_rL = (SC + 164) + *(DWORD*)(SC + 164);
-	*(DWORD*)(*(DWORD*)(m_rL + 112) + 24) = 7;
 }

@@ -48,6 +48,7 @@
     <ClInclude Include="Lua\luaconf.h" />
     <ClInclude Include="Lua\luajit.h" />
     <ClInclude Include="Lua\lualib.h" />
+    <ClInclude Include="RbxFunctions.hpp" />
     <ClInclude Include="Retcheck.h" />
     <ClInclude Include="Roblox.h" />
     <ClInclude Include="Structs.hpp" />
