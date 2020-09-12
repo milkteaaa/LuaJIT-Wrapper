@@ -5,6 +5,9 @@
 #include "Drawing.hpp"
 #include "Client.h"
 #include "Obfuscation.hpp"
+#include "MsgBoxHook.hpp"
+#include "TaintedBypass.hpp"
+#include "RbxFunctions.hpp"
 #pragma comment(lib, "wininet.lib")
 
 
@@ -36,7 +39,7 @@ DWORD WINAPI LuaPipe(PVOID lvpParameter)
 	char buffer[999999];
 	DWORD dwRead;
 	OBFUSCATE_STR(a1,"\\\\.\\pipe\\LuaJIT");
-	string("\\\\.\\pipe\\JIT"); /* simple pipe hiding technique */	
+	string lpipe = ("\\\\.\\pipe\\JIT"); /* simple pipe hiding technique */	
 	hPipe = CreateNamedPipe(TEXT(a1.decrypt()),
 		PIPE_ACCESS_DUPLEX | PIPE_TYPE_BYTE | PIPE_READMODE_BYTE,
 		PIPE_WAIT,
@@ -111,12 +114,16 @@ void main()
 	printf("Setting LuaState..\n");
 	SetRBXLuaState();
 	m_L = luaL_newstate();
+	printf("Loading bypasses..\n");
+	IsTaintedBypass();
+	LoadLogBypass();
 	LuaWrapper::VehHandlerpush();
 	printf("Loading libraries..\n");
 	luaL_openlibs(m_L);
 	printf("Wrapping Globals..\n");
 	WrapGlobals();
 	DrawingAPI::InitiateDrawingAPI(m_L);
+	Register(m_L);
 	lua_newtable(m_L);
 	lua_setglobal(m_L, "_G");
 	lua_setglobal(m_L, "shared");

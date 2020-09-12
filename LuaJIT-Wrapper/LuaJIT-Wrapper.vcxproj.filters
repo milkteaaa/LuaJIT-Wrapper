@@ -57,6 +57,48 @@
     <ClCompile Include="Drawing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Lua\lj_lib.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_bit.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_os.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_math.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_jit.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_debug.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_ffi.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_string.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_table.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_package.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_base.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_io.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_aux.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua\lib_init.c">
+      <Filter>Resource Files\Lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lua\lua.hpp">
@@ -130,6 +172,15 @@
     </ClInclude>
     <ClInclude Include="XorString.hpp">
       <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TaintedBypass.hpp">
+      <Filter>Header Files\Bypasses</Filter>
+    </ClInclude>
+    <ClInclude Include="MsgBoxHook.hpp">
+      <Filter>Header Files\Bypasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\lj_lib.h">
+      <Filter>Resource Files\Lua</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
