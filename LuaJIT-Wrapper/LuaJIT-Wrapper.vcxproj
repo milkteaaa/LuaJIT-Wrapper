@@ -27,20 +27,6 @@
     <ClCompile Include="ImGui\imgui_impl_dx9.cpp" />
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="Lua\lib_aux.c" />
-    <ClCompile Include="Lua\lib_base.c" />
-    <ClCompile Include="Lua\lib_bit.c" />
-    <ClCompile Include="Lua\lib_debug.c" />
-    <ClCompile Include="Lua\lib_ffi.c" />
-    <ClCompile Include="Lua\lib_init.c" />
-    <ClCompile Include="Lua\lib_io.c" />
-    <ClCompile Include="Lua\lib_jit.c" />
-    <ClCompile Include="Lua\lib_math.c" />
-    <ClCompile Include="Lua\lib_os.c" />
-    <ClCompile Include="Lua\lib_package.c" />
-    <ClCompile Include="Lua\lib_string.c" />
-    <ClCompile Include="Lua\lib_table.c" />
-    <ClCompile Include="Lua\lj_lib.c" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -56,13 +42,9 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="LuaWrapper.h" />
-    <ClInclude Include="Lua\lauxlib.h" />
-    <ClInclude Include="Lua\lj_lib.h" />
     <ClInclude Include="Lua\lua.h" />
     <ClInclude Include="Lua\lua.hpp" />
-    <ClInclude Include="Lua\luaconf.h" />
     <ClInclude Include="Lua\luajit.h" />
-    <ClInclude Include="Lua\lualib.h" />
     <ClInclude Include="MsgBoxHook.hpp" />
     <ClInclude Include="Obfuscation.hpp" />
     <ClInclude Include="RbxFunctions.hpp" />
@@ -172,7 +154,7 @@
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;LUAJITWRAPPER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
