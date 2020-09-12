@@ -4,6 +4,7 @@
 #include <vector>
 #include "Drawing.hpp"
 #include "Client.h"
+#include "Obfuscation.hpp"
 #pragma comment(lib, "wininet.lib")
 
 DWORD DataModel;
@@ -15,9 +16,9 @@ using LuaWrapper::m_L;
 
 void Execute(std::string Script) {
 	Script = "spawn(function() script=Instance.new(\"LocalScript\") " + Script + "\r\nend)";
-	if (luaL_loadbuffer(m_L, Script.c_str(), Script.size(), "@JIT"))
+	if (luaL_loadbuffer(m_L, Script.c_str(), Script.size(), RAND_STR(5).c_str()))
 	{
-		r_lua_getglobal(m_rL, "warn");
+		r_lua_getglobal(m_rL, "warn");		
 		r_lua_pushstring(m_rL, lua_tostring(m_L, -1));
 		r_lua_pcall(m_rL, 1, 0, 0);
 		return;
@@ -29,14 +30,15 @@ void Execute(std::string Script) {
 	UserDataGC(m_L);
 }
 
-
 DWORD WINAPI LuaPipe(PVOID lvpParameter)
 {
 	string WholeScript = "";
 	HANDLE hPipe;
 	char buffer[999999];
 	DWORD dwRead;
-	hPipe = CreateNamedPipe(TEXT("\\\\.\\pipe\\LuaJIT"),
+	OBFUSCATE_STR(a1,"\\\\.\\pipe\\LuaJIT");
+	string("\\\\.\\pipe\\JIT"); /* simple pipe hiding technique */	
+	hPipe = CreateNamedPipe(TEXT(a1.decrypt()),
 		PIPE_ACCESS_DUPLEX | PIPE_TYPE_BYTE | PIPE_READMODE_BYTE,
 		PIPE_WAIT,
 		1,

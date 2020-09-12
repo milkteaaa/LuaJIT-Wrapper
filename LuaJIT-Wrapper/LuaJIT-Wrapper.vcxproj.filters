@@ -125,5 +125,11 @@
     <ClInclude Include="RbxFunctions.hpp">
       <Filter>Header Files\Exploit</Filter>
     </ClInclude>
+    <ClInclude Include="Obfuscation.hpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="XorString.hpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

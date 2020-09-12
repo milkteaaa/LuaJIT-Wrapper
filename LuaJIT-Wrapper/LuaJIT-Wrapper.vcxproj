@@ -48,10 +48,12 @@
     <ClInclude Include="Lua\luaconf.h" />
     <ClInclude Include="Lua\luajit.h" />
     <ClInclude Include="Lua\lualib.h" />
+    <ClInclude Include="Obfuscation.hpp" />
     <ClInclude Include="RbxFunctions.hpp" />
     <ClInclude Include="Retcheck.h" />
     <ClInclude Include="Roblox.h" />
     <ClInclude Include="Structs.hpp" />
+    <ClInclude Include="XorString.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -72,7 +74,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
