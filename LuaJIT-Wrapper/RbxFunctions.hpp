@@ -25,7 +25,7 @@ int getgenv(lua_State* L)
 
 int getrenv(lua_State* L)
 {
-	lua_pushvalue(L, LUA_REGISTRYINDEX);
+	lua_pushvalue(L, int(m_rL));
 	LuaWrapper::Wrap(m_rL, L, -1);
 	return 1;
 }
@@ -38,6 +38,13 @@ int getfenv(lua_State* L) {
 
 int getsenv(lua_State* L) {
 	lua_pushvalue(L, LUA_ENVIRONINDEX);
+	LuaWrapper::Wrap(m_rL, L, -1);
+	return 1;
+}
+
+int getreg(lua_State* L)
+{
+	lua_pushvalue(L, LUA_REGISTRYINDEX);
 	LuaWrapper::Wrap(m_rL, L, -1);
 	return 1;
 }
@@ -117,6 +124,7 @@ void Register(lua_State* L)
 	lua_register(L, "getrawmetatable", getrawmetatable);
 	lua_register(L, "getgenv", getgenv);
 	lua_register(L, "getrenv", getrenv);
+	lua_register(L, "getreg", getreg);
 	lua_register(L, "getfenv", getfenv);
 	lua_register(L, "getsenv", getsenv);
 	lua_register(L, "getmenv", getsenv);
