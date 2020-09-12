@@ -7,7 +7,6 @@
 #include "Obfuscation.hpp"
 #pragma comment(lib, "wininet.lib")
 
-DWORD DataModel;
 
 using LuaWrapper::m_rL;
 using LuaWrapper::m_L;
@@ -16,9 +15,9 @@ using LuaWrapper::m_L;
 
 void Execute(std::string Script) {
 	Script = "spawn(function() script=Instance.new(\"LocalScript\") " + Script + "\r\nend)";
-	if (luaL_loadbuffer(m_L, Script.c_str(), Script.size(), RAND_STR(5).c_str()))
+	if (luaL_loadbuffer(m_L, Script.c_str(), Script.size(), RAND_STR(5).c_str())) /* simple call obfuscation */
 	{
-		r_lua_getglobal(m_rL, "warn");		
+		r_lua_getglobal(m_rL, "warn");
 		r_lua_pushstring(m_rL, lua_tostring(m_L, -1));
 		r_lua_pcall(m_rL, 1, 0, 0);
 		return;
@@ -78,7 +77,7 @@ DWORD WINAPI LuaPipe(PVOID lvpParameter)
 void SetRBXLuaState()
 {
 	static DWORD SC;
-	SC = FindFirstClass(GetDMPad(), "ScriptContext");
+	SC = FindFirstClass(ReturnDataModel(), "ScriptContext");
 	m_rL = (SC + 164) + *(DWORD*)(SC + 164);
 	*(DWORD*)(*(DWORD*)(m_rL + 112) + 24) = 7;
 }
@@ -108,7 +107,7 @@ void main()
 {
 	ConsoleBypass("LuaJIT Wrapper");
 	printf("Getting DataModel..\n");
-	DataModel = GetDMPad();
+	DataModel = ReturnDataModel();
 	printf("Setting LuaState..\n");
 	SetRBXLuaState();
 	m_L = luaL_newstate();
@@ -134,7 +133,7 @@ void TeleportHandler()
 	main();
 	while (true)
 	{
-		if (DataModel != GetDMPad())
+		if (DataModel != ReturnDataModel())
 		{
 			Sleep(1);
 			main();

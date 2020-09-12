@@ -1,5 +1,8 @@
 #pragma once
 #include "Roblox.h"
+#include "LuaWrapper.h"
+
+using LuaWrapper::m_L;
 
 int SetClientName(std::string Name)
 {
@@ -27,10 +30,10 @@ void ConsoleBypass(const char* Title) {
 
 std::string GetPlayerName()
 {
-	lua_getglobal(L, "game");
-    lua_getfield(L, -1, "Players");
-	lua_getfield(L, -1, "LocalPlayer");
-	lua_getfield(L, -1, "Name");
-	std::string playername = lua_tolstring(L, -1, NULL);
+	lua_getglobal(m_L, "game");
+    lua_getfield(m_L, -1, "Players");
+	lua_getfield(m_L, -1, "LocalPlayer");
+	lua_getfield(m_L, -1, "Name");
+	std::string playername = lua_tolstring(m_L, -1, NULL);
 	return playername;
 }

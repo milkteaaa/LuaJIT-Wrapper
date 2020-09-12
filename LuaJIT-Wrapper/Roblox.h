@@ -23,10 +23,11 @@
 
 #include "Lua/lua.hpp"
 
-int GDM;
+DWORD DataModel;
 
 DWORD TOP = 24;
 DWORD BASE = 20;
+
 typedef DWORD(__cdecl* getdatamodel2ok)();
 getdatamodel2ok   getdatamodel2 = (getdatamodel2ok)(x(14995600));
 
@@ -135,7 +136,7 @@ int FindFirstClass(int Instance, const char* Name)
 	}
 }
 
-int GetDMPad()
+int ReturnDataModel()
 {
 	static DWORD DMPad[4]{};
 	r_getdatamodel(getdatamodel2(), (DWORD)DMPad);

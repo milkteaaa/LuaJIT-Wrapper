@@ -56,6 +56,16 @@ int getgc(lua_State* L)
 	return 0;
 }
 
+int GetHardwareID(lua_State* L) {
+	HW_PROFILE_INFO hwProfileInfo;
+	GetCurrentHwProfileA(&hwProfileInfo);
+	string hwidWString = hwProfileInfo.szHwProfileGuid;
+	string hwid(hwidWString.begin(), hwidWString.end());
+	lua_pushstring(L, hwid.c_str());
+	return 1;
+}
+
+
 void Register(lua_State* L)
 {
 	lua_register(L, "getrawmetatable", getrawmetatable);
@@ -65,4 +75,5 @@ void Register(lua_State* L)
 	lua_register(L, "getsenv", getsenv);
 	lua_register(L, "getmenv", getsenv);
 	lua_register(L, "getgc", getgc);
+	lua_register(L, "gethwid", GetHardwareID);
 }
