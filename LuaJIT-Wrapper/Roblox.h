@@ -14,8 +14,8 @@
 #define R_LUA_TLIGHTUSERDATA 4
 #define R_LUA_TNUMBER 3
 #define R_LUA_TSTRING 5
-#define R_LUA_TUSERDATA 9
-#define R_LUA_TFUNCTION 6
+#define R_LUA_TUSERDATA 6
+#define R_LUA_TFUNCTION 9
 #define R_LUA_TTHREAD 8
 #define R_LUA_TTABLE 7
 #define R_LUA_TPROTO 10
@@ -25,8 +25,8 @@
 
 DWORD DataModel;
 
-DWORD TOP = 24;
-DWORD BASE = 20;
+DWORD TOP = 12;
+DWORD BASE = 24;
 
 typedef DWORD(__cdecl* getdatamodel2ok)();
 getdatamodel2ok   getdatamodel2 = (getdatamodel2ok)(x(14995600));
@@ -143,3 +143,59 @@ int ReturnDataModel()
 	DWORD DM = DMPad[0];
 	return DM + 12;
 }
+
+typedef void(__thiscall* fireclick)(DWORD, float, DWORD);
+fireclick FireClick = (fireclick)x(0xBA02C0);
+
+union r_lua_Value {
+	int b;
+	double n;
+	void* p;
+	void* gc;
+};
+
+struct r_lua_TValue {
+	r_lua_Value value;
+	int tt;
+};
+
+typedef r_lua_TValue* (__cdecl* rrindex2)(int lst, int idx);
+rrindex2 r_lua_index2 = (rrindex2)(x(0x11B3310));
+
+/* synapse's instance xd */
+DWORD instance_ptr;
+
+#define SynException(x) (x)
+#define ERR_INVALID_INST		1
+
+#define DereferenceSmartPointerInstance(Ptr) (*(DWORD*) (Ptr))
+#define BoundsCheckInstance() if (!instance_ptr) throw SynException(ERR_INVALID_INST)
+
+
+std::string Synx_GetInstanceClassName(DWORD Inst)
+{
+	if (Inst == 0)
+	{
+		BoundsCheckInstance();
+#ifdef _DEBUG
+		return std::string(*(const char**)(*(DWORD*)(instance_ptr + 0xC) + 4));
+#else
+		return **(std::string**)(*(DWORD*)(instance_ptr + 0xC) + 4);
+#endif
+	}
+#ifdef _DEBUG
+	return std::string(*(const char**)(*(DWORD*)(Inst + 0xC) + 4));
+#else
+	return **(std::string**)(*(DWORD*)(Inst + 0xC) + 4);
+#endif
+}
+
+/* my instance check implementation for FCD */
+const char* GetInstanceClassName(int instancename) {
+
+	if (instancename == 0)
+	{
+		return (*(const char**)(*(DWORD*)(instancename + 16) + 4));
+	}
+}
+

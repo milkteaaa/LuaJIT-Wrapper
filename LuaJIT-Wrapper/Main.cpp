@@ -79,7 +79,7 @@ void SetRBXLuaState()
 	static DWORD SC;
 	SC = FindFirstClass(ReturnDataModel(), "ScriptContext");
 	m_rL = (SC + 164) + *(DWORD*)(SC + 164);
-	*(DWORD*)(*(DWORD*)(m_rL + 112) + 24) = 7;
+	*(DWORD*)(*(DWORD*)(m_rL + 108) + 24) = 7;
 }
 
 void WrapGlobals()

@@ -65,6 +65,50 @@ int GetHardwareID(lua_State* L) {
 	return 1;
 }
 
+bool CheckInstance(lua_State* m_L, int Index)
+{
+	lua_getglobal(m_L, "typeof");
+	lua_pushvalue(m_L, Index);
+	lua_pcall(m_L, 1, 1, 0);
+	const auto Check = lua_tostring(m_L, -1);
+	lua_pop(m_L, 1);
+	return !strcmp(Check, "Instance");
+}
+
+int fireclickdetector(lua_State* m_L)
+{
+	/* rewritten my lua5.1 fireclickdetector to work with luaJIT */
+
+	if (!lua_isuserdata(m_L, 1) || !CheckInstance(m_L, 1))
+		return luaL_argerror(m_L, 1, "expected userdata <ClickDetector>");
+
+	uintptr_t rawInstancePtr = DereferenceSmartPointerInstance((DWORD)lua_touserdata(m_L, -1));
+
+	if (!lua_isnoneornil(m_L, 2) && !lua_isnumber(m_L, 2))
+		return luaL_argerror(m_L, 1, "variant <none, number> expected");
+
+	if (GetInstanceClassName(lua_touserdata(m_L, 1) != "ClickDetector"))
+	{
+		return luaL_argerror(m_L, 1, "userdata <ClickDetector> expected");
+	}
+
+	float distance = 0.0;
+	if (lua_isnumber(m_L, 2))
+		distance = (float)lua_tonumber(m_L, 2);
+
+	lua_getglobal(m_L, "game");
+	lua_getfield(m_L, -1, "GetService");
+	lua_insert(m_L, -2);
+	lua_pushstring(m_L, "Players");
+	lua_pcall(m_L, 2, 1, 0);
+	lua_getfield(m_L, -1, "LocalPlayer");
+
+	uintptr_t rawPlayerInstancePtr = DereferenceSmartPointerInstance((DWORD)lua_touserdata(m_L, -1));
+
+	FireClick(rawInstancePtr, distance, rawPlayerInstancePtr);
+	return 0;
+}
+
 
 void Register(lua_State* L)
 {
@@ -76,4 +120,5 @@ void Register(lua_State* L)
 	lua_register(L, "getmenv", getsenv);
 	lua_register(L, "getgc", getgc);
 	lua_register(L, "gethwid", GetHardwareID);
+	lua_register(L, "fireclickdetector", fireclickdetector);
 }
