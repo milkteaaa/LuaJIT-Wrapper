@@ -31,7 +31,7 @@ DWORD BASE = 24;
 typedef DWORD(__cdecl* getdatamodel2ok)();
 getdatamodel2ok   getdatamodel2 = (getdatamodel2ok)(x(0xE790D0));
 
-typedef DWORD(__stdcall* getdatamodelok)(DWORD, DWORD);
+typedef DWORD(__thiscall* getdatamodelok)(DWORD, DWORD);
 getdatamodelok   r_getdatamodel = (getdatamodelok)(x(0xE79220));
 
 typedef int(__cdecl* printok)(int, const char*);
