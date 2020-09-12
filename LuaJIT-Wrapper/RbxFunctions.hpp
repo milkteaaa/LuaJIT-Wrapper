@@ -20,12 +20,14 @@ int getgenv(lua_State* L)
 {
 	lua_pushvalue(L, LUA_GLOBALSINDEX);
 	LuaWrapper::Wrap(m_rL, L, -1);
+	return 1;
 }
 
 int getrenv(lua_State* L)
 {
 	lua_pushvalue(L, LUA_REGISTRYINDEX);
 	LuaWrapper::Wrap(m_rL, L, -1);
+	return 1;
 }
 
 int getfenv(lua_State* L) {
