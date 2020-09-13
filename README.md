@@ -4,3 +4,4 @@ ROBLOX Lua Wrapper made using Lua 5.1 Just-In-Time compiler
 LuaJIT is a **Just-In-Time compiler**, with a fast Lua VM optimized for faster script performance. This helps the wrapper to run Lua faster than executing with normal Lua VM.
 # Contributors
 - yuuki#9999 | Lead Development
+- Virtualization#1337 | Contributed to repo
