@@ -5,3 +5,4 @@ LuaJIT is a **Just-In-Time compiler**, with a fast Lua VM optimized for faster s
 # Contributors
 - yuuki#9999 | Lead Development
 - Virtualization#1337 | Contributed to repo
+- Vegie#0001 | Helped me getting LuaJIT running
