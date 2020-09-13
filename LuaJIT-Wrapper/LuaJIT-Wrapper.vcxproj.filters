@@ -128,5 +128,11 @@
     <ClInclude Include="MsgBoxHook.hpp">
       <Filter>Header Files\Bypasses</Filter>
     </ClInclude>
+    <ClInclude Include="Lua\lauxlib.h">
+      <Filter>Resource Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="Lua\luaconf.h">
+      <Filter>Resource Files\Lua</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

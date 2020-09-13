@@ -42,8 +42,10 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="LuaWrapper.h" />
+    <ClInclude Include="Lua\lauxlib.h" />
     <ClInclude Include="Lua\lua.h" />
     <ClInclude Include="Lua\lua.hpp" />
+    <ClInclude Include="Lua\luaconf.h" />
     <ClInclude Include="Lua\luajit.h" />
     <ClInclude Include="MsgBoxHook.hpp" />
     <ClInclude Include="Obfuscation.hpp" />

@@ -49,22 +49,6 @@ int getreg(lua_State* L)
 	return 1;
 }
 
-int getgc(lua_State* L)
-{
-	void* UD = lua_touserdata(L, 1);
-	lua_pushvalue(L, 1);
-	lua_gettable(L, LUA_REGISTRYINDEX);
-	if (!lua_isnil(L, -1)) {
-		int Reference = lua_tointeger(L, -1);
-		r_lua_pushnil(m_rL);
-		r_lua_rawseti(m_rL, LUA_REGISTRYINDEX, Reference);
-		r_lua_settop(m_rL, 0);
-		return 1;
-	}
-	lua_pop(L, 1);
-	return 0;
-}
-
 int GetHardwareID(lua_State* L) {
 	HW_PROFILE_INFO hwProfileInfo;
 	GetCurrentHwProfileA(&hwProfileInfo);
@@ -128,7 +112,6 @@ void Register(lua_State* L)
 	lua_register(L, "getfenv", getfenv);
 	lua_register(L, "getsenv", getsenv);
 	lua_register(L, "getmenv", getsenv);
-	lua_register(L, "getgc", getgc);
 	lua_register(L, "gethwid", GetHardwareID);
-	lua_register(L, "fireclickdetector", fireclickdetector);
+	//lua_register(L, "fireclickdetector", fireclickdetector);
 }

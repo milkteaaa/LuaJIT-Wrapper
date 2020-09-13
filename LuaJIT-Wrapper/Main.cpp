@@ -28,6 +28,7 @@ void Execute(std::string Script) {
 	else
 	{
 		lua_pcall(m_L, 0, 0, 0);
+		
 	}
 	UserDataGC(m_L);
 }
@@ -79,7 +80,7 @@ DWORD WINAPI LuaPipe(PVOID lvpParameter)
 
 void SetRBXLuaState()
 {
-	static DWORD SC;
+	static DWORD SC;	
 	SC = FindFirstClass(ReturnDataModel(), "ScriptContext");
 	m_rL = (SC + 164) + *(DWORD*)(SC + 164);
 	*(DWORD*)(*(DWORD*)(m_rL + 108) + 24) = 7;
@@ -88,7 +89,7 @@ void SetRBXLuaState()
 void WrapGlobals()
 {
 	std::vector<const char*> Globals = {
-	"game","Game","workspace","Workspace", "printidentity",
+	"game","Game","workspace","Workspace","printidentity",
 	"Axes","BrickColor","CFrame","Color3","ColorSequence","ColorSequenceKeypoint",
 	"NumberRange","NumberSequence","NumberSequenceKeypoint","PhysicalProperties","Ray",
 	"Rect","Region3","Region3int16","TweenInfo","UDim","UDim2","Vector2",
