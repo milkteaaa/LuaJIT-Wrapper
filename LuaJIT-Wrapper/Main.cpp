@@ -16,6 +16,12 @@ using LuaWrapper::m_L;
 
 // no this is definitely not axon you shut ur mouth
 
+/*
+* Halting updates
+* I've seen alot of errors and stuff in my code and I've decided to leave it like this for a while
+* I'll be finishing my C++ course and will come back when I have a level of mastery in C++
+*/
+
 void Execute(std::string Script) {
 	Script = "spawn(function() script=Instance.new(\"LocalScript\") " + Script + "\r\nend)";
 	if (luaL_loadbuffer(m_L, Script.c_str(), Script.size(), RAND_STR(5).c_str())) /* simple call obfuscation */
