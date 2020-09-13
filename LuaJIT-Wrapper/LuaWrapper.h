@@ -286,8 +286,8 @@ namespace LuaWrapper
 				LuaWrapper::Wrap(rL, L, -1);
 				lua_pushcfunction(L, Index);
 				lua_setfield(L, -2, "__index");
-				lua_pushcfunction(L, UserDataGC);
-				lua_setfield(L, -2, "__gc");
+				//lua_pushcfunction(L, UserDataGC);
+				//lua_setfield(L, -2, "__gc");
 				lua_setmetatable(L, -2);
 				lua_pushvalue(L, -1);
 				lua_rawseti(L, -10000, rawInstancePtr);
